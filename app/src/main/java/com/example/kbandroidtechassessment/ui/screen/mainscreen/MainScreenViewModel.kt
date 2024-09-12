@@ -2,7 +2,7 @@ package com.example.kbandroidtechassessment.ui.screen.mainscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kbandroidtechassessment.dto.Transaction
+import com.example.kbandroidtechassessment.data.Transaction
 import com.example.kbandroidtechassessment.utils.DateUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

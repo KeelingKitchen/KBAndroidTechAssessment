@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import com.example.kbandroidtechassessment.dto.Transaction
+import com.example.kbandroidtechassessment.data.Transaction
 import com.example.kbandroidtechassessment.ui.component.FilterDateRangeButton
 import com.example.kbandroidtechassessment.ui.component.FilterResetButton
 import com.example.kbandroidtechassessment.ui.component.TransactionItem

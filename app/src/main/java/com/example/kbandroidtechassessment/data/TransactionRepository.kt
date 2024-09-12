@@ -1,8 +1,10 @@
 package com.example.kbandroidtechassessment.data
 
+import com.example.kbandroidtechassessment.utils.DateUtil
+
 class TransactionRepository {
     fun getTransactions(): List<Transaction> {
-        return listOf(
+        val transactions = listOf(
             Transaction("2024-09-22", "Restaurant", -35.00),
             Transaction("2024-09-24", "Car Repair", -150.00),
             Transaction("2024-09-11", "Utilities", -150.00),
@@ -34,5 +36,7 @@ class TransactionRepository {
             Transaction("2024-09-03", "Restaurant", -35.00),
             Transaction("2024-09-04", "Gas Station", -60.00),
             )
+
+        return transactions.sortedByDescending { DateUtil.stringToLocalDate(it.date) }
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kbandroidtechassessment.dto.Transaction
+import com.example.kbandroidtechassessment.extension.toCurrencyNZDString
 
 @Composable
 fun TransactionItem(transaction: Transaction) {
@@ -23,7 +24,7 @@ fun TransactionItem(transaction: Transaction) {
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "$${transaction.amount}",
+            text = transaction.amount.toCurrencyNZDString(),
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f)

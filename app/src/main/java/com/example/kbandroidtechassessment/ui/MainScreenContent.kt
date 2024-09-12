@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.example.kbandroidtechassessment.dto.Transaction
+import com.example.kbandroidtechassessment.extension.toCurrencyNZDString
 import com.example.kbandroidtechassessment.ui.component.TransactionItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,16 +66,14 @@ fun MainScreenContent(
                     fontSize = TextUnit(16f, TextUnitType.Sp),
                 )
                 /*
-                todo: task #1 - Calculate Balance: Accurately calculate
-                 and display the available balance based on the transactions.
-                */
-
-                /*
                 todo: task #4 - Update Balance: As transactions are filtered,
                  recalculate and display the filtered balance.
                 */
                 Text(
-                    text = "$0.00",
+                    text = calculateBalance(
+                        startingBalance = startingBalance,
+                        transactions = transactions,
+                    ).toCurrencyNZDString(),
                     fontWeight = FontWeight.W600,
                     fontSize = TextUnit(24f, TextUnitType.Sp),
                 )
@@ -93,6 +92,18 @@ fun MainScreenContent(
         }
     }
 }
+
+private fun calculateBalance(
+    startingBalance: Double,
+    transactions: List<Transaction>,
+): Double {
+    var balance = startingBalance
+    transactions.forEach { transaction ->
+        balance += transaction.amount
+    }
+    return balance
+}
+
 
 @Preview(showBackground = true)
 @Composable

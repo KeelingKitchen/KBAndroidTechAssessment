@@ -71,4 +71,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation("org.threeten:threetenbp:1.3.3") {
+        exclude(group = "com.jakewharton.threetenabp", module = "threetenabp")
+    }
 }

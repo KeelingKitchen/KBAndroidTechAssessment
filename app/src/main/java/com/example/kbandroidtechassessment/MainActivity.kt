@@ -45,6 +45,15 @@ class MainActivity : ComponentActivity() {
                                 Text("Travel Savings Account")
                             },
                             actions = {
+                                /*
+                                todo: task #2 - Date Filter: Add a date filter UI element
+                                 (e.g., date pickers or text fields).
+                                */
+
+                                /*
+                                todo: task #5 - Reset Filter: Provide a way to reset the filters
+                                 and view all transactions.
+                                */
                                 IconButton(onClick = { /* Handle filter action */ }) {
                                     Icon(
                                         imageVector = Icons.Default.DateRange,
@@ -62,6 +71,15 @@ class MainActivity : ComponentActivity() {
                                 fontWeight = FontWeight.W300,
                                 fontSize = TextUnit(16f, TextUnitType.Sp),
                             )
+                            /*
+                            todo: task #1 - Calculate Balance: Accurately calculate
+                             and display the available balance based on the transactions.
+                            */
+
+                            /*
+                            todo: task #4 - Update Balance: As transactions are filtered,
+                             recalculate and display the filtered balance.
+                            */
                             Text(
                                 text = "$0.00",
                                 fontWeight = FontWeight.W600,
@@ -72,6 +90,11 @@ class MainActivity : ComponentActivity() {
                         val transactions = getTransactions()
                         LazyColumn {
                             items(transactions) { transaction ->
+                                /*
+                                todo: task #3 - Filter Transactions:
+                                 When a filter is applied, update the transaction list to
+                                 display only transactions within the specified date range.
+                                */
                                 TransactionItem(transaction = transaction)
                             }
                         }

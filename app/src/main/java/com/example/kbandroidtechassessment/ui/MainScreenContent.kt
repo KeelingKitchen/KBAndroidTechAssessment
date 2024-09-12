@@ -81,14 +81,10 @@ fun MainScreenContent(
                     fontWeight = FontWeight.W300,
                     fontSize = TextUnit(16f, TextUnitType.Sp),
                 )
-                /*
-                todo: task #4 - Update Balance: As transactions are filtered,
-                 recalculate and display the filtered balance.
-                */
                 Text(
                     text = calculateBalance(
                         startingBalance = startingBalance,
-                        transactions = transactions,
+                        transactions = filteredTransactions,
                     ).toCurrencyNZDString(),
                     fontWeight = FontWeight.W600,
                     fontSize = TextUnit(24f, TextUnitType.Sp),

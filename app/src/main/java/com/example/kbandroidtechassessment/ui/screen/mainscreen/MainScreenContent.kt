@@ -1,5 +1,6 @@
-package com.example.kbandroidtechassessment.ui
+package com.example.kbandroidtechassessment.ui.screen.mainscreen
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,10 +14,8 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,30 +23,28 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.example.kbandroidtechassessment.dto.Transaction
-import com.example.kbandroidtechassessment.utils.extension.TAG
-import com.example.kbandroidtechassessment.utils.extension.toCurrencyNZDString
 import com.example.kbandroidtechassessment.ui.component.FilterDateRangeButton
 import com.example.kbandroidtechassessment.ui.component.FilterResetButton
 import com.example.kbandroidtechassessment.ui.component.TransactionItem
-import com.example.kbandroidtechassessment.utils.DateUtil
-import org.threeten.bp.LocalDate
+import com.example.kbandroidtechassessment.utils.extension.toCurrencyNZDString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreenContent(
     startingBalance: Double,
-    transactions: List<Transaction>,
+    viewModel: MainScreenViewModel,
 ) {
-    // State to keep track of the selected date range
-    var selectedStartDate by remember { mutableStateOf<LocalDate?>(null) }
-    var selectedEndDate by remember { mutableStateOf<LocalDate?>(null) }
+    // Collect state from ViewModel
+    val selectedStartDate by viewModel.selectedStartDate.collectAsState()
+    val selectedEndDate by viewModel.selectedEndDate.collectAsState()
+    val transactions by viewModel.transactions.collectAsState()
 
-    // Filter transactions based on the selected date range
-    val filteredTransactions = transactions.filter { transaction ->
-        val transactionDate = DateUtil.stringToLocalDate(transaction.date)
-        (selectedStartDate == null || !transactionDate.isBefore(selectedStartDate!!)) &&
-                (selectedEndDate == null || !transactionDate.isAfter(selectedEndDate!!))
-    }
+    val filteredTransactions = viewModel.getPresentedTransactions()
+
+    Log.v(TAG, "selectedStartDate: $selectedStartDate")
+    Log.v(TAG, "selectedEndDate: $selectedEndDate")
+    Log.d(TAG, "transactions.size: ${transactions.size}")
+    Log.d(TAG, "filteredTransactions.size: ${filteredTransactions.size}")
 
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -58,24 +55,14 @@ fun MainScreenContent(
                 actions = {
                     if (selectedStartDate != null || selectedEndDate != null) {
                         FilterResetButton(
-                            onClick = {
-                                selectedStartDate = null
-                                selectedEndDate = null
-                            },
+                            onClick = viewModel::resetDateRange,
                         )
                     }
 
-                    FilterDateRangeButton(
-                        onDateRangeSelected = { startDateMillis, endDateMillis ->
-                            startDateMillis?.let {
-                                selectedStartDate = DateUtil.millisecondsToLocalDate(it)
-                            }
-                            endDateMillis?.let {
-                                selectedEndDate = DateUtil.millisecondsToLocalDate(it)
-                            }
-                            Log.d(TAG, "onDateRangeSelected: $selectedStartDate, $selectedEndDate")
-                        }
-                    )
+                    FilterDateRangeButton { startDateMillis, endDateMillis ->
+                        viewModel.setStartDate(startDateMillis)
+                        viewModel.setEndDate(endDateMillis)
+                    }
                 }
             )
         }
@@ -88,10 +75,7 @@ fun MainScreenContent(
                     fontSize = TextUnit(16f, TextUnitType.Sp),
                 )
                 Text(
-                    text = calculateBalance(
-                        startingBalance = startingBalance,
-                        transactions = filteredTransactions,
-                    ).toCurrencyNZDString(),
+                    text = viewModel.calculateBalance(startingBalance).toCurrencyNZDString(),
                     fontWeight = FontWeight.W600,
                     fontSize = TextUnit(24f, TextUnitType.Sp),
                 )
@@ -106,27 +90,20 @@ fun MainScreenContent(
     }
 }
 
-private fun calculateBalance(
-    startingBalance: Double,
-    transactions: List<Transaction>,
-): Double {
-    var balance = startingBalance
-    transactions.forEach { transaction ->
-        balance += transaction.amount
-    }
-    return balance
-}
-
 
 @Preview(showBackground = true)
 @Composable
 fun MainScreenContentPreview() {
     MainScreenContent(
         startingBalance = 5000.00,
-        transactions = listOf(
-            Transaction("2024-09-22", "Restaurant", -35.00),
-            Transaction("2024-09-24", "Car Repair", -150.00),
-            Transaction("2024-09-11", "Utilities", -150.00),
-        )
+        viewModel = MainScreenViewModel().apply {
+            setTransactions(
+                listOf(
+                    Transaction("2024-09-22", "Restaurant", -35.00),
+                    Transaction("2024-09-24", "Car Repair", -150.00),
+                    Transaction("2024-09-11", "Utilities", -150.00),
+                )
+            )
+        }
     )
 }

@@ -4,8 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kbandroidtechassessment.dto.Transaction
-import com.example.kbandroidtechassessment.ui.MainScreenContent
+import com.example.kbandroidtechassessment.ui.screen.mainscreen.MainScreenContent
+import com.example.kbandroidtechassessment.ui.screen.mainscreen.MainScreenViewModel
 import com.example.kbandroidtechassessment.ui.theme.KBAndroidTechAssessmentTheme
 
 class MainActivity : ComponentActivity() {
@@ -14,16 +16,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KBAndroidTechAssessmentTheme {
+                val viewModel: MainScreenViewModel = viewModel()
+                viewModel.setTransactions(getTransactions())
+
                 MainScreenContent(
                     startingBalance = getStartingBalance(),
-                    transactions = getTransactions()
+                    viewModel = viewModel
                 )
             }
         }
     }
 }
 
-private fun getStartingBalance() = 5000.00
+private fun getStartingBalance() = 000.00
 
 private fun getTransactions() = listOf(
     Transaction("2024-09-22", "Restaurant", -35.00),

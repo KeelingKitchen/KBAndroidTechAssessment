@@ -4,18 +4,15 @@ import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 import org.threeten.bp.ZoneId
 
-class DateUtil {
+object DateUtil {
+    // Convert milliseconds to LocalDate
+    fun millisecondsToLocalDate(milliseconds: Long): LocalDate {
+        val instant = Instant.ofEpochMilli(milliseconds)
+        return instant.atZone(ZoneId.systemDefault()).toLocalDate()
+    }
 
-    companion object {
-        // Convert milliseconds to LocalDate
-        fun millisecondsToLocalDate(milliseconds: Long): LocalDate {
-            val instant = Instant.ofEpochMilli(milliseconds)
-            return instant.atZone(ZoneId.systemDefault()).toLocalDate()
-        }
-
-        // Convert transaction date String to LocalDate
-        fun stringToLocalDate(dateString: String): LocalDate {
-            return LocalDate.parse(dateString)
-        }
+    // Convert transaction date String to LocalDate
+    fun stringToLocalDate(dateString: String): LocalDate {
+        return LocalDate.parse(dateString)
     }
 }

@@ -1,17 +1,14 @@
 package com.example.kbandroidtechassessment.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,7 +20,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.example.kbandroidtechassessment.dto.Transaction
+import com.example.kbandroidtechassessment.extension.TAG
 import com.example.kbandroidtechassessment.extension.toCurrencyNZDString
+import com.example.kbandroidtechassessment.ui.component.FilterDateRangeButton
 import com.example.kbandroidtechassessment.ui.component.TransactionItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,20 +39,14 @@ fun MainScreenContent(
                 },
                 actions = {
                     /*
-                    todo: task #2 - Date Filter: Add a date filter UI element
-                     (e.g., date pickers or text fields).
-                    */
-
-                    /*
                     todo: task #5 - Reset Filter: Provide a way to reset the filters
                      and view all transactions.
                     */
-                    IconButton(onClick = { /* Handle filter action */ }) {
-                        Icon(
-                            imageVector = Icons.Default.DateRange,
-                            contentDescription = "Filter"
-                        )
-                    }
+                    FilterDateRangeButton(
+                        onDateRangeSelected = { startDate, endDate ->
+                            Log.d(TAG, "onDateRangeSelected: $startDate, $endDate");
+                        }
+                    )
                 }
             )
         }

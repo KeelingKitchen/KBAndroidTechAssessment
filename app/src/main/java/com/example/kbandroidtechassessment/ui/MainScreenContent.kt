@@ -13,6 +13,10 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +28,8 @@ import com.example.kbandroidtechassessment.extension.TAG
 import com.example.kbandroidtechassessment.extension.toCurrencyNZDString
 import com.example.kbandroidtechassessment.ui.component.FilterDateRangeButton
 import com.example.kbandroidtechassessment.ui.component.TransactionItem
+import com.example.kbandroidtechassessment.utils.DateUtil
+import org.threeten.bp.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,6 +37,17 @@ fun MainScreenContent(
     startingBalance: Double,
     transactions: List<Transaction>,
 ) {
+    // State to keep track of the selected date range
+    var selectedStartDate by remember { mutableStateOf<LocalDate?>(null) }
+    var selectedEndDate by remember { mutableStateOf<LocalDate?>(null) }
+
+    // Filter transactions based on the selected date range
+    val filteredTransactions = transactions.filter { transaction ->
+        val transactionDate = DateUtil.stringToLocalDate(transaction.date)
+        (selectedStartDate == null || !transactionDate.isBefore(selectedStartDate!!)) &&
+                (selectedEndDate == null || !transactionDate.isAfter(selectedEndDate!!))
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             LargeTopAppBar(
@@ -43,8 +60,14 @@ fun MainScreenContent(
                      and view all transactions.
                     */
                     FilterDateRangeButton(
-                        onDateRangeSelected = { startDate, endDate ->
-                            Log.d(TAG, "onDateRangeSelected: $startDate, $endDate");
+                        onDateRangeSelected = { startDateMillis, endDateMillis ->
+                            startDateMillis?.let {
+                                selectedStartDate = DateUtil.millisecondsToLocalDate(it)
+                            }
+                            endDateMillis?.let {
+                                selectedEndDate = DateUtil.millisecondsToLocalDate(it)
+                            }
+                            Log.d(TAG, "onDateRangeSelected: $selectedStartDate, $selectedEndDate")
                         }
                     )
                 }
@@ -73,12 +96,7 @@ fun MainScreenContent(
             }
             HorizontalDivider()
             LazyColumn {
-                items(transactions) { transaction ->
-                    /*
-                    todo: task #3 - Filter Transactions:
-                     When a filter is applied, update the transaction list to
-                     display only transactions within the specified date range.
-                    */
+                items(filteredTransactions) { transaction ->
                     TransactionItem(transaction = transaction)
                 }
             }

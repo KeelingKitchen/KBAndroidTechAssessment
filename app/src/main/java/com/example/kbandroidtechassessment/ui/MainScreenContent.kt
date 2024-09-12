@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.example.kbandroidtechassessment.dto.Transaction
-import com.example.kbandroidtechassessment.extension.TAG
-import com.example.kbandroidtechassessment.extension.toCurrencyNZDString
+import com.example.kbandroidtechassessment.utils.extension.TAG
+import com.example.kbandroidtechassessment.utils.extension.toCurrencyNZDString
 import com.example.kbandroidtechassessment.ui.component.FilterDateRangeButton
 import com.example.kbandroidtechassessment.ui.component.FilterResetButton
 import com.example.kbandroidtechassessment.ui.component.TransactionItem

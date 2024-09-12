@@ -1,4 +1,4 @@
-package com.example.kbandroidtechassessment.extension
+package com.example.kbandroidtechassessment.utils.extension
 
 import java.text.NumberFormat
 import java.util.Locale

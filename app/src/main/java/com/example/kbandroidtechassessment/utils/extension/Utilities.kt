@@ -1,4 +1,4 @@
-package com.example.kbandroidtechassessment.extension
+package com.example.kbandroidtechassessment.utils.extension
 
 val Any.TAG: String
     get() {

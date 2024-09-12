@@ -27,6 +27,7 @@ import com.example.kbandroidtechassessment.dto.Transaction
 import com.example.kbandroidtechassessment.extension.TAG
 import com.example.kbandroidtechassessment.extension.toCurrencyNZDString
 import com.example.kbandroidtechassessment.ui.component.FilterDateRangeButton
+import com.example.kbandroidtechassessment.ui.component.FilterResetButton
 import com.example.kbandroidtechassessment.ui.component.TransactionItem
 import com.example.kbandroidtechassessment.utils.DateUtil
 import org.threeten.bp.LocalDate
@@ -55,10 +56,15 @@ fun MainScreenContent(
                     Text("Travel Savings Account")
                 },
                 actions = {
-                    /*
-                    todo: task #5 - Reset Filter: Provide a way to reset the filters
-                     and view all transactions.
-                    */
+                    if (selectedStartDate != null || selectedEndDate != null) {
+                        FilterResetButton(
+                            onClick = {
+                                selectedStartDate = null
+                                selectedEndDate = null
+                            },
+                        )
+                    }
+
                     FilterDateRangeButton(
                         onDateRangeSelected = { startDateMillis, endDateMillis ->
                             startDateMillis?.let {
